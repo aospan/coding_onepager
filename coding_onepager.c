@@ -119,3 +119,98 @@ void print_graph (graph_t *gr) {
     }
   }
 }
+
+/*****************************/
+/***         SORTING       ***/
+/*****************************/
+
+/*** Insertion Sort ***/
+// https://www.hackerrank.com/challenges/insertionsort2/problem
+// https://en.wikipedia.org/wiki/Insertion_sort
+void insertion_sort(int n, int arr_count, int* arr)
+{
+  for (int i = 1; i < n; i++) {
+    for (int j = i; j > 0 && arr[j-1] > arr[j]; j--) {
+      if (arr[j] < arr[j-1])
+        swap(&arr[j-1], &arr[j]);
+    }
+    print_array(arr, n);
+  }
+}
+
+/*** Quick sort ***/
+// https://en.wikipedia.org/wiki/Quicksort
+int partition(int l, int r, int *ar)
+{
+  int pivot = ar[r]; // last element as pivot
+  int pivot_index = l;
+
+  for (int i = l; i < r; i++) {
+    if (ar[i] < pivot) {
+      swap(&ar[i], &ar[pivot_index]);
+      pivot_index++;
+    }
+  }
+
+  // place pivot val to found pivot index
+  swap(&ar[r], &ar[pivot_index]);
+
+  return pivot_index;
+}
+
+// usage:
+// quicksort(0, ar_size - 1, ar);
+void quicksort(int l, int r, int *ar)
+{
+	int pivot_index;
+
+	if (l >= r)
+		return;
+
+	pivot_index = partition(l, r, ar);
+
+	quicksort(l, pivot_index -1, ar); // left side
+	quicksort(pivot_index + 1, r, ar); // right part
+}
+
+/*** Heap sort ***/
+// https://en.wikipedia.org/wiki/Heapsort
+void heapify(int parent, int ar_size, int *ar)
+{
+  int largest = parent;
+  int l = parent*2 + 1;
+  int r = parent*2 + 2;
+
+  if (l < ar_size && ar[l] > ar[largest])
+    largest = l;
+
+  if (r < ar_size && ar[r] > ar[largest])
+    largest = r;
+
+  if (largest != parent) {
+    swap (&ar[largest], &ar[parent]);
+
+    // fix affected sub-heap
+    heapify(largest, ar_size, ar);
+  }
+}
+
+// usage:
+// int ar[8] = {1, 3, 2, 4, 7, 9, 6, 5};
+// int ar_size = sizeof(ar)/sizeof(ar[0]);
+// heapsort(ar_size, ar);
+void heapsort(int ar_size, int *ar)
+{
+  for (int i = ar_size/2 - 1; i >= 0; i--) {
+    heapify(i, ar_size, ar);
+  }
+
+  // shrink array by 1 and fix resulting heap
+  for (int i = ar_size - 1; i > 0; i--) {
+    // swap first <-> last
+    swap(&ar[0], &ar[i]);
+
+    // fix heap
+    heapify(0, i, ar);
+  }
+}
