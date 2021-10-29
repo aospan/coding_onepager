@@ -232,3 +232,38 @@ void heapsort(int ar_size, int *ar)
     heapify(0, i, ar);
   }
 }
+
+/*****************************/
+/***         SEARCH        ***/
+/*****************************/
+
+// binary search
+// recrusive impl below
+// time complexity: O(log n)
+// space complexity: O(log n) (stack memory)
+// https://www.geeksforgeeks.org/binary-search/ (recursive + iterative implementations)
+// https://en.wikipedia.org/wiki/Binary_search_algorithm
+int binary_search(int arr[], int l, int r, int x)
+{
+	if (r >= l) {
+		int mid = l + (r - l) / 2;
+
+		// If the element is present at the middle
+		// itself
+		if (arr[mid] == x)
+			return mid;
+
+		// If element is smaller than mid, then
+		// it can only be present in left subarray
+		if (arr[mid] > x)
+			return binary_search(arr, l, mid - 1, x);
+
+		// Else the element can only be present
+		// in right subarray
+		return binary_search(arr, mid + 1, r, x);
+	}
+
+	// We reach here when element is not
+	// present in array
+	return -1;
+}
