@@ -2,6 +2,10 @@
 
 ## Basic coding interview data structures and algos in plain C
 
+### Usage
+1. Open [coding_onepager.c](https://github.com/aospan/coding_onepager/blob/main/coding_onepager.c) and click copy raw content.
+2. Paste to [hackerrank.com](https://www.hackerrank.com/), [leetcode.com](https://leetcode.com/) or other platforms
+
 ### Implemented features:
 * Sort:
   * Insertion Sort
