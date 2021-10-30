@@ -1,9 +1,20 @@
 # Coding OnePager
 
-## Basic coding interview data structures and algos in easy to use one pager format written in "pure C".
+## Basic coding interview data structures and algos in plain C
 
-Implemented features in C:
-	- queue
-	- graph
-
-Suitable for BFS (breadth-first-search) algo tasks.
+### Implemented features:
+* Sort:
+  * Insertion Sort
+  * Quick sort
+  * Heap sort
+  * Pancake sort
+* Search:
+  * Binary search
+* Queue
+* Graph (adjacency list graph)
+* Helpers:
+  * power (no math.h required)
+  * print array
+  * swap elements
+  * flip array
+  * find max element
