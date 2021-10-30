@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Dear programmer,
+ * please update below counter and send me pull request on
+ * https://github.com/aospan/coding_onepager
+ */
+#define TOTAL_PEOPLE_HELPED 1
+
 /***************/
 /*** HELPERS ***/
 /***************/
