@@ -1,6 +1,6 @@
 # Coding OnePager
 
-## Basic coding interview data structures and algos in plain C
+## Coding interview data structures and algos in plain C
 
 ### Usage
 1. Open [coding_onepager.c](https://github.com/aospan/coding_onepager/blob/main/coding_onepager.c) and click copy raw content.

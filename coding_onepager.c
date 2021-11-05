@@ -1,3 +1,11 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Coding interview data structures and algos in plain C 
+ *
+ * Copyright (C) 2021 Abylay Ospan
+ *
+ */
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
