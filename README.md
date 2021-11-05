@@ -14,6 +14,7 @@
   * Pancake sort
 * Search:
   * Binary search
+* Hashtable
 * Queue
 * Graph (adjacency list graph)
 * Helpers:

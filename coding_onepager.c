@@ -108,6 +108,77 @@ bool is_empty(queue_t *q) {
   return q->size ? false:true;
 }
 
+
+/****************************/
+/***        HASH TABLE    ***/
+/****************************/
+/* usage example:
+	 hasht_t *ht = alloc_hasht(1024);
+	 hasht_node_t *node = NULL;
+	 hasht_add(ht, 42, 777);
+	 node = hasht_search(ht, 42);
+*/
+
+typedef struct hasht_node {
+	int key;
+	int val;
+	struct hasht_node * next;
+} hasht_node_t;
+
+typedef struct {
+	int size;
+	hasht_node_t **nodes;
+} hasht_t;
+
+// TODO: find better hash function
+int hash_func (hasht_t *ht, int val)
+{
+	return abs(val) % ht->size;
+}
+
+hasht_t * alloc_hasht(int size) 
+{
+	hasht_t * ht = malloc(sizeof(hasht_t));
+	ht->size = size;
+	ht->nodes = malloc(size * sizeof(hasht_node_t*));
+	memset(ht->nodes, 0, size * sizeof(hasht_node_t*));
+	return ht;
+}
+
+hasht_node_t * hasht_alloc_node(int key, int val)
+{
+	hasht_node_t *node = malloc(sizeof(hasht_node_t));
+	node->val = val;
+	node->key = key;
+	node->next = NULL;
+	return node;
+}
+
+hasht_node_t * hasht_search(hasht_t *ht, int key)
+{
+	int hkey = hash_func(ht, key);
+	hasht_node_t * node = ht->nodes[hkey];
+	while (node) {
+		if (node->key == key)
+			return node;
+		node = node->next;
+	}
+	return NULL;
+}
+
+void hasht_add (hasht_t *ht, int key, int val)
+{
+	int hkey = hash_func(ht, key);
+	hasht_node_t *new_node = hasht_alloc_node(key, val);
+	// check if we already have this key node
+	hasht_node_t *node = hasht_search(ht, key);
+	if (!node) {
+		// new key, add it
+		new_node->next = ht->nodes[hkey];
+		ht->nodes[hkey] = new_node;
+	}
+}
+
 /****************************/
 /***        GRAPH         ***/
 /*** adjacency list graph ***/
