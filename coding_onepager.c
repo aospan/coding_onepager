@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Dear programmer,
+/* Dear Programmer,
  * please update below counter and send me pull request on
  * https://github.com/aospan/coding_onepager
  */
