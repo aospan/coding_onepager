@@ -15,6 +15,7 @@
 * Search:
   * Binary search
 * Hashtable
+* Stack
 * Queue
 * Graph (adjacency list graph)
 * Helpers:

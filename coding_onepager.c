@@ -79,6 +79,55 @@ float power(float x, int y)
 }
 
 /*************/
+/*** STACK ***/
+/*************/
+/* Usage example:
+	stack_t *st = alloc_stack();
+	push(st, 42);
+	if (!is_stack_empty(st))
+		val = pop(st);
+*/
+typedef struct list_node {
+	int val;
+	struct list_node *next;
+} list_node_t;
+
+typedef struct {
+	list_node_t *top;
+	list_node_t *nodes;
+} stack_t;
+
+stack_t *alloc_stack()
+{
+	stack_t *st = malloc(sizeof(stack_t));
+	st->nodes = NULL;
+	st->top = NULL;
+	return st;
+}
+
+void push(stack_t *st, int val)
+{
+	list_node_t *node = malloc(sizeof(list_node_t));
+	node->val = val;
+	node->next = st->top;
+	st->top = node;
+}
+
+int pop(stack_t *st)
+{
+	// TODO: free allocated mem
+	list_node_t *node = st->top;
+	st->top = node->next;
+	return node->val;
+}
+
+int is_stack_empty(stack_t *st)
+{
+	return st->top == NULL;
+}
+
+
+/*************/
 /*** QUEUE ***/
 /*************/
 typedef struct {
