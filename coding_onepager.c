@@ -94,13 +94,11 @@ typedef struct list_node {
 
 typedef struct {
 	list_node_t *top;
-	list_node_t *nodes;
 } stack_t;
 
 stack_t *alloc_stack()
 {
 	stack_t *st = malloc(sizeof(stack_t));
-	st->nodes = NULL;
 	st->top = NULL;
 	return st;
 }
@@ -130,41 +128,92 @@ int is_stack_empty(stack_t *st)
 /*************/
 /*** QUEUE ***/
 /*************/
+/*
+         head                    tail
+          |                        |
+ NULL <- node <- node <- node <- node
+
+ * enqueue to head
+ * dequeue from tail
+
+ Usage example:
+	queue_t *q = alloc_queue();
+  int val = 42;
+	enqueue(q, &val);
+
+  if (!is_empty(q)) {
+		printf("queue size=%d\n", queue_size(q));
+		printf("val=%d\n", *(int*)dequeue(q));
+	}
+*/
+typedef struct queue_node {
+	void *val;
+	struct queue_node *prev;
+} queue_node_t;
+
 typedef struct {
-  int first;
-  int last;
-  int capacity;
-  int size;
-  int *array;
+	queue_node_t *head;
+	queue_node_t *tail;
+	int size;
 } queue_t;
 
-queue_t * alloc_queue(int capacity) {
-  queue_t *new_queue = malloc(sizeof(queue_t));
-  new_queue->capacity = capacity;
-  new_queue->array = malloc(capacity * sizeof(int));
-  new_queue->last = -1; 
-  new_queue->first = 0;
-  new_queue->size = 0;
-  return new_queue;
+queue_t * alloc_queue()
+{
+	queue_t *q = malloc(sizeof(queue_t));
+	q->head = NULL;
+	q->tail = NULL;
+	q->size = 0;
+	return q;
 }
 
-void enqueue(queue_t *q, int val) {
-  q->last = (q->last + 1) % (q->capacity);
-  q->array[q->last] = val;
-  q->size++;
+void enqueue(queue_t *q, void *val)
+{
+	queue_node_t *node = malloc(sizeof(queue_node_t));
+	node->val = val;
+	node->prev = NULL;
+
+	// add node to head & update head
+	if (q->head)
+		q->head->prev = node;
+	q->head = node;
+
+	// update tail if required
+	if (!q->tail)
+		q->tail = node;
+
+	q->size++;
 }
 
-int dequeue(queue_t *q) {
-  int val = q->array[q->first];
-  q->first = (q->first + 1) % (q->capacity);
-  q->size--;
-  return val;
+void * dequeue(queue_t *q)
+{
+	void *val = NULL;
+	if (!q->tail) // attempt to dequeue from empty queue
+		return NULL;
+
+	// dequeue from tail & update tail
+	queue_node_t *node = q->tail;
+	q->tail = q->tail->prev;
+
+	// update head if required
+	if (!q->tail)
+		q->head = NULL;
+
+	q->size--; // dec queue size
+
+	val = node->val;
+	free(node);
+	return val;
 }
 
-bool is_empty(queue_t *q) {
-  return q->size ? false:true;
+int queue_size(queue_t *q)
+{
+	return q->size;
 }
 
+int is_empty(queue_t *q)
+{
+	return q->tail == NULL;
+}
 
 /****************************/
 /***        HASH TABLE    ***/
