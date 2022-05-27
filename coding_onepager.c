@@ -286,6 +286,77 @@ void hasht_add (hasht_t *ht, int key, int val)
 }
 
 /****************************/
+/***  HASH TABLE v2       ***/
+/***  key/val is void *   ***/
+/****************************/
+/* usage example:
+	 hasht_v2_t *ht = alloc_hasht_v2(1024);
+	 hasht_v2_node_t *node = NULL;
+	 hasht_v2_add(ht, ptr_key, ptr_val);
+	 node = hasht_v2_search(ht, 42);
+*/
+
+typedef struct hasht_v2_node {
+	void *key;
+	void *val;
+	struct hasht_v2_node * next;
+} hasht_v2_node_t;
+
+typedef struct {
+	int size;
+	hasht_v2_node_t **nodes;
+} hasht_v2_t;
+
+// TODO: find better hash function
+int hash_v2_func (hasht_v2_t *ht, void *i)
+{
+	return abs((int)i) % ht->size;
+}
+
+hasht_v2_t * alloc_hasht_v2(int size) 
+{
+	hasht_v2_t * ht = malloc(sizeof(hasht_v2_t));
+	ht->size = size;
+	ht->nodes = malloc(size * sizeof(hasht_v2_node_t*));
+	memset(ht->nodes, 0, size * sizeof(hasht_v2_node_t*));
+	return ht;
+}
+
+hasht_v2_node_t * hasht_v2_alloc_node(void *key, void *val)
+{
+	hasht_v2_node_t *node = malloc(sizeof(hasht_v2_node_t));
+	node->val = val;
+	node->key = key;
+	node->next = NULL;
+	return node;
+}
+
+hasht_v2_node_t * hasht_v2_search(hasht_v2_t *ht, void *key)
+{
+	int hkey = hash_v2_func(ht, key);
+	hasht_v2_node_t * node = ht->nodes[hkey];
+	while (node) {
+		if (node->key == key)
+			return node;
+		node = node->next;
+	}
+	return NULL;
+}
+
+void hasht_v2_add (hasht_v2_t *ht, void *key, void *val)
+{
+	int hkey = hash_v2_func(ht, key);
+	hasht_v2_node_t *new_node = hasht_v2_alloc_node(key, val);
+	// check if we already have this key node
+	hasht_v2_node_t *node = hasht_v2_search(ht, key);
+	if (!node) {
+		// new key, add it
+		new_node->next = ht->nodes[hkey];
+		ht->nodes[hkey] = new_node;
+	}
+}
+
+/****************************/
 /***        GRAPH         ***/
 /*** adjacency list graph ***/
 /****************************/
