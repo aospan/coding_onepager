@@ -310,7 +310,8 @@ typedef struct {
 // TODO: find better hash function
 int hash_v2_func (hasht_v2_t *ht, void *i)
 {
-	return abs((int)i) % ht->size;
+	// casting void* to int!
+	return labs((intptr_t)i) % ht->size;
 }
 
 hasht_v2_t * alloc_hasht_v2(int size) 
