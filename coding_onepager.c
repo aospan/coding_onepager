@@ -363,20 +363,20 @@ void hasht_v2_del(hasht_v2_t *ht, void *key)
 	hasht_v2_node_t * prev_node = ht->nodes[hkey];
 	hasht_v2_node_t * node = ht->nodes[hkey];
 
-  while (node) {
-    if (node->key == key) {
-      if (node == prev_node)
-        ht->nodes[hkey] = node->next; // first node, update storage
-      else
-        prev_node->next = node->next;
-      break;
-    }
-    prev_node = node;
+	while (node) {
+		if (node->key == key) {
+			if (node == prev_node)
+				ht->nodes[hkey] = node->next; // first node, update storage
+			else
+				prev_node->next = node->next;
+			break;
+		}
+		prev_node = node;
 
 		node = node->next;
-  }
+	}
 
-  free(node);
+	free(node);
 }
 
 /****************************/
