@@ -568,6 +568,60 @@ void pancakeSort(int* arr, int n)
 	}
 }
 
+/*** Merge sort ***/
+// info: https://www.geeksforgeeks.org/merge-sort/
+void merge(int *arr, int start, int mid, int end)
+{
+	int l_size = mid - start + 1;
+	int r_size = end - mid;
+	int arr_l[l_size];
+	int arr_r[r_size];
+
+	// copy data to tmp arrays
+	for (int i = 0; i < l_size; i++)
+		arr_l[i] = arr[start + i];
+
+	for (int i = 0; i < r_size; i++)
+		arr_r[i] = arr[mid + i + 1];
+
+	// copy data back to src array according it's values (asc order)
+	int l = 0, r = 0, out = 0;
+	while (l < l_size && r < r_size) {
+		if (arr_l[l] < arr_r[r]) {
+			arr[start + out] = arr_l[l];
+			l++;
+		} else {
+			arr[start + out] = arr_r[r];
+			r++;
+		}
+		out++;
+	}
+
+	// copy leftovers
+	while (l < l_size) {
+		arr[start + out] = arr_l[l++];
+		out++;
+	}
+
+	while (r < r_size) {
+		arr[start + out] = arr_r[r++];
+		out++;
+	}
+}
+
+void mergesort(int *arr, int start, int end)
+{
+	int mid = start + (end - start)/2;
+
+	if (start >= end)
+		return;
+
+	mergesort(arr, start, mid);
+	mergesort(arr, mid + 1, end);
+
+	merge(arr, start, mid, end);
+}
+
 /*****************************/
 /***         SEARCH        ***/
 /*****************************/
