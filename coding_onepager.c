@@ -130,10 +130,12 @@ int is_stack_empty(stack_t *st)
 /*  void* elements  */
 /********************/
 /* Usage example:
-	stack_t *st = alloc_stack();
-	push(st, ptr);
-	if (!is_stack_empty(st))
-		ptr = pop(st);
+	stack_v2_t *st = alloc_v2_stack();
+	push_v2(st, ptr);
+	if (!is_stack_v2_empty(st)) {
+		ptr = top(st);
+		pop(st);
+	}
 */
 typedef struct list_v2_node {
 	void *val;
