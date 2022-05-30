@@ -125,6 +125,59 @@ int is_stack_empty(stack_t *st)
 }
 
 
+/********************/
+/*** STACK v2     ***/
+/*  void* elements  */
+/********************/
+/* Usage example:
+	stack_t *st = alloc_stack();
+	push(st, ptr);
+	if (!is_stack_empty(st))
+		ptr = pop(st);
+*/
+typedef struct list_v2_node {
+	void *val;
+	struct list_v2_node *next;
+} list_v2_node_t;
+
+typedef struct {
+	list_v2_node_t *top;
+} stack_v2_t;
+
+stack_v2_t *alloc_v2_stack()
+{
+	stack_v2_t *st = malloc(sizeof(stack_v2_t));
+	st->top = NULL;
+	return st;
+}
+
+void push_v2(stack_v2_t *st, void *val)
+{
+	list_v2_node_t *node = malloc(sizeof(list_v2_node_t));
+	node->val = val;
+	node->next = st->top;
+	st->top = node;
+}
+
+void* top_v2(stack_v2_t *st)
+{
+	// TODO: free allocated mem
+	list_v2_node_t *node = st->top;
+	return node->val;
+}
+
+void pop_v2(stack_v2_t *st)
+{
+	// TODO: free allocated mem
+	list_v2_node_t *node = st->top;
+	st->top = node->next;
+}
+
+int is_stack_v2_empty(stack_v2_t *st)
+{
+	return st->top == NULL;
+}
+
 /*************/
 /*** QUEUE ***/
 /*************/
