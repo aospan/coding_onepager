@@ -711,3 +711,89 @@ int binary_search(int arr[], int l, int r, int x)
 	// present in array
 	return -1;
 }
+
+/**********************************/
+/*** min-heap aka PriorityQueue ***/
+/**********************************/
+
+/* Usage example:
+	min_heap_t *heap = alloc_min_heap();
+	heap_add(heap, 20);
+	heap_add(heap, 10);
+	heap_add(heap, 1);
+	int min = heap_top(heap);
+	heap_pop(heap);
+	heap_size(heap);
+*/
+typedef struct min_heap_t {
+	int *arr;
+	int size;
+} min_heap_t;
+
+min_heap_t * alloc_min_heap()
+{
+	min_heap_t *obj = malloc(sizeof(min_heap_t));
+	obj->arr = NULL;
+	obj->size = 0;
+	return obj;
+}
+
+void min_heapify(min_heap_t *heap, int root_idx)
+{
+	int smallest = root_idx;
+	int left = root_idx * 2 + 1;
+	int right = root_idx * 2 + 2;
+
+	if (left < heap->size && heap->arr[left] < heap->arr[smallest])
+		smallest = left;
+
+	if (right < heap->size && heap->arr[right] < heap->arr[smallest])
+		smallest = right;
+
+	// recursively sift biggest to the bottom
+	if (smallest != root_idx) {
+		swap(&heap->arr[smallest], &heap->arr[root_idx]);
+		min_heapify(heap, smallest);
+	}
+}
+
+void heap_add(min_heap_t *heap, int val)
+{
+	heap->size++;
+	heap->arr = realloc(heap->arr, heap->size * sizeof(int));
+	heap->arr[heap->size - 1] = val;
+
+	for (int idx = (heap->size - 1)/2; idx >= 0; idx--) {
+		min_heapify(heap, idx);
+	}
+}
+
+void heap_pop(min_heap_t *heap)
+{
+	if (!(--heap->size))
+		return;
+
+	int tmp[heap->size];
+
+	// TODO: optimize me!
+	// save to tmp
+	memcpy(tmp, heap->arr + 1, heap->size * sizeof(int));
+	// shrink by 1
+	heap->arr = realloc(heap->arr, heap->size * sizeof(int));
+	// copy back from tmp
+	memcpy(heap->arr, tmp, heap->size * sizeof(int));
+
+	for (int idx = (heap->size - 1)/2; idx >= 0; idx--) {
+		min_heapify(heap, idx);
+	}
+}
+
+int heap_top(min_heap_t *heap)
+{
+	return (heap->size) ? heap->arr[0] : 0;
+}
+
+int heap_size(min_heap_t *heap)
+{
+	return heap->size;
+}
