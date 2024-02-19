@@ -797,3 +797,42 @@ int heap_size(min_heap_t *heap)
 {
 	return heap->size;
 }
+
+/**********************/
+/*** String Builder ***/
+/**********************/
+
+/* Simple implementation of Java's StringBuilder in C */
+typedef struct string_builder {
+	char *buf;
+	int len;
+} string_builder_t;
+
+/* allocate string builder */
+string_builder_t* sb_alloc() {
+	string_builder_t *sb = malloc(sizeof(string_builder_t));
+	sb->buf = NULL;
+	sb->len = 0;
+	return sb;
+}
+
+/* append one character to the end */
+void sb_append(string_builder_t *sb, char *append) {
+	sb->buf = realloc(sb->buf, sb->len + 1);
+	memcpy(sb->buf + sb->len, append, 1);
+	sb->len += 1;
+}
+
+/* delete one character from the end */
+void sb_delete_last(string_builder_t *sb) {
+	sb->len -= 1;
+	sb->buf = realloc(sb->buf, sb->len);
+}
+
+/* return NULL-terminated content */
+char* sb_get_buf(string_builder_t *sb) {
+	char *res_buf = malloc(sb->len + 1);
+	memcpy(res_buf, sb->buf, sb->len);
+	res_buf[sb->len] = '\0';
+	return res_buf;
+}
